@@ -13,16 +13,23 @@ let cards = [];
 for (let fortressName in fortresses) {
     let description = fortresses[fortressName];
 
-    if (description.split(":").length > 0) {
-        description = `<tspan fill="#d4ccff">` +  description.split(":")[0] + ":</tspan>" + description.split(":").slice(1).join(":");
+    if (description.split(":").length > 1) {
+        description = `<tspan fill="#d4ccff">` + split(description.split(":")[0]) + ":</tspan>" + 
+            split(description.split(":").slice(1).join(":"));
+    } else {
+        description = split(description);
     }
 
-    const svg = template.replace("Ability Text", "<tspan x=\"0\">" + description.replaceAll("\n", "</tspan><tspan x=\"0\" dy=\"1.2em\">") + "</tspan>")
+    const svg = template.replace("Ability Text", description)
         .replace("Name of Fortress", fortressName);
     const id = fortressName.toLowerCase().replace(/\s+/g, "-");
     fs.writeFileSync("out/fortress-" + id + ".svg", svg);
     execSync(`convert out/fortress-${id}.svg png/fortress-${id}.png`);
     cards.push([`https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/fortress-${id}.png`]);
+}
+
+function split(text) {
+    return "<tspan x=\"0\">" + text.replaceAll("\n", "</tspan><tspan x=\"0\" dy=\"1.2em\">") + "</tspan>";
 }
 
 execSync(`convert fortress-back.svg png/fortress-back.png`);

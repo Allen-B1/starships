@@ -104,7 +104,7 @@
   </defs>
    <rect x="-128" y="-96" width="256" height="192" fill="#925300" />
     <text x="0" y="-24"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px;font-weight:500" fill="#fff">Knockback</text>
-    <text x="0" y="8"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px" fill="#fff"><tspan x="0"><tspan fill="#d4ccff">Lose health:</tspan></tspan><tspan x="0" dy="1.2em">Deal 1 damage</tspan></text>
+    <text x="0" y="8"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px" fill="#fff"><tspan fill="#d4ccff"><tspan x="0">Lose health</tspan><tspan x="0" dy="1.2em">during your turn</tspan>:</tspan><tspan x="0"></tspan><tspan x="0" dy="1.2em">Deal 1 damage</tspan></text>
     <image
        width="24"
        height="24"

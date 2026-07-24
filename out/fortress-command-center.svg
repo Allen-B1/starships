@@ -104,7 +104,7 @@
   </defs>
    <rect x="-128" y="-96" width="256" height="192" fill="#925300" />
     <text x="0" y="-24"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px;font-weight:500" fill="#fff">Command Center</text>
-    <text x="0" y="8"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px" fill="#fff"><tspan x="0"><tspan fill="#d4ccff">Double the damage of your</tspan><tspan x="0" dy="1.2em">first attack each combat:</tspan></tspan></text>
+    <text x="0" y="8"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px" fill="#fff"><tspan x="0">The first card played each combat</tspan><tspan x="0" dy="1.2em">is played twice</tspan></text>
     <image
        width="24"
        height="24"
