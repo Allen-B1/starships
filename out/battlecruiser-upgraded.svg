@@ -105,7 +105,7 @@
 
     
             <use href="#dmg" y="136" x="96" />
-            <text x="128" y="171" class="amt">4</text>
+            <text x="128" y="171" class="amt">5</text>
         
 
     <text x="128" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px">Play the top 2 cards of your draw pile</text>

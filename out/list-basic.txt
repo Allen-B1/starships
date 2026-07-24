@@ -1,3 +1,0 @@
-6 https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/light-ship.png
-2 https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/heavy-ship.png
-1 https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/support-ship.png

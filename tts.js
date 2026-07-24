@@ -1,4 +1,43 @@
 export function createCard(back, card, idx) {
+    let states = {};
+
+    if (card.length != 1) {
+        states = {
+            2: {
+                Name: "CardCustom",
+                Transform: {
+                    posX: 0,
+                    posY: 0,
+                    posZ: 0,
+                    rotX: 0,
+                    rotY: 0,
+                    rotZ: 180,
+                    scaleX: 1,
+                    scaleY: 1,
+                    scaleZ: 1
+                },
+
+                HideWhenFaceDown: true,
+                DragSelectable: true,
+                Autoraise: true,
+                Grid: true, Snap: true, Sticky: true,
+                CardID: (2*idx+1 + 10) * 100,
+
+                CustomDeck: {
+                    [(2*idx+1 + 10)]: {
+                        FaceURL: card[1],
+                        BackURL: back,
+                        BackIsHidden: true,
+                        UniqueBack: false,
+                        NumWidth: 1,
+                        NumHeight: 1,
+                        Type: 1
+                    }
+                }
+            }
+        }
+    }
+
     return {
         Name: "CardCustom",
         Transform: {
@@ -7,7 +46,7 @@ export function createCard(back, card, idx) {
             posZ: 0,
             rotX: 0,
             rotY: 0,
-            rotZ: 0,
+            rotZ: 180,
             scaleX: 1,
             scaleY: 1,
             scaleZ: 1
@@ -17,38 +56,21 @@ export function createCard(back, card, idx) {
         DragSelectable: true,
         Autoraise: true,
         Grid: true, Snap: true, Sticky: true,
-        CardID: 2*idx * 100,
+        CardID: (2*idx + 10) * 100,
 
         CustomDeck: {
-            1: {
+            [(2*idx + 10)]: {
                 FaceURL: card[0],
                 BackURL: back,
                 BackIsHidden: true,
                 UniqueBack: false,
+                NumWidth: 1,
+                NumHeight: 1,
                 Type: 1
             }
         },
 
-        States: {
-            1: {
-                Name: "CardCustom",
-                HideWhenFaceDown: true,
-                DragSelectable: true,
-                Autoraise: true,
-                Grid: true, Snap: true, Sticky: true,
-                CardID: (2*idx+1) * 100,
-
-                CustomDeck: {
-                    1: {
-                        FaceURL: card[1],
-                        BackURL: back,
-                        BackIsHidden: true,
-                        UniqueBack: false,
-                        Type: 1
-                    }
-                }
-            }
-        }
+        States: states
     }
 }
 
@@ -61,7 +83,7 @@ export function createDeck(back, cards) {
             posZ: 0,
             rotX: 0,
             rotY: 0,
-            rotZ: 0,
+            rotZ: 180,
             scaleX: 1,
             scaleY: 1,
             scaleZ: 1
@@ -74,17 +96,19 @@ export function createDeck(back, cards) {
         Sticky: true,
         Toolitp: true,
         HideWhenFaceDown: true,
-        DeckIDs: cards.map((_, i) => 2*i * 100),
+        DeckIDs: cards.map((_, i) => (2*i + 10) * 100),
         CustomDeck: {},
         ContainedObjects: cards.map((c, i) => createCard(back, c, i))
     };
 
     for (let i = 0; i < cards.length; i++) {
-        obj.CustomDeck[i+1] = {
+        obj.CustomDeck[[(2*i + 10)]] = {
             FaceURL: cards[i][0],
             BackURL: back,
             BackIsHidden: true,
             UniqueBack: false,
+            NumWidth: 1,
+            NumHeight: 1,
             Type: 1
         };
     }
@@ -94,22 +118,8 @@ export function createDeck(back, cards) {
 
 export function wrap(obj) {
     return {
-        "SaveName": "",
-        "Date": "",
-        "VersionNumber": "",
-        "GameMode": "",
-        "GameType": "",
-        "GameComplexity": "",
-        "Tags": [],
-        "Gravity": 0.5,
-        "PlayArea": 0.5,
-        "Table": "",
-        "Sky": "",
-        "Note": "",
-        "TabStates": {},
-        "LuaScript": "",
-        "LuaScriptState": "",
-        "XmlUI": "",
+        Gravity: 0.5,
+        PlayArea: 0.5,
         ObjectStates: [obj]
     };
 }

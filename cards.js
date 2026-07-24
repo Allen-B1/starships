@@ -24,7 +24,7 @@ const COMPANY_NAMES = {
 
 function upgrade(ship) {
     if (ship.effects.dmg)
-        ship.effects.dmg++;
+        ship.effects.dmg += ship.fuel <= 1 ? 1 : ship.fuel;
     if (ship.effects.heal > 0)
         ship.effects.heal++;
     if (ship.effects.energy)
@@ -86,7 +86,7 @@ function generateShip(ship, shipName, company) {
     return svg;
 }
 
-let list = [];
+let cards = [];
 let basicCards = [];
 
 for (let company in companies) {
@@ -107,15 +107,26 @@ for (let company in companies) {
                 "Light Ship": 6,
                 "Support Ship": 1
             }[shipName];
-            basicCards.push([
-                `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}.png`,
-                `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}-upgraded.png`
-            ]);
+            for (let i = 0; i < amt; i++) {
+                basicCards.push([
+                    `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}.png`,
+                    `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}-upgraded.png`
+                ]);
+            }
         } else {
+            for (let i = 0; i < 3; i++) {
+                cards.push([
+                    `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}.png`,
+                    `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}-upgraded.png`
+                ]);
+            }
         }
     }
 }
 
 fs.writeFileSync(os.homedir() + "/.local/share/Tabletop Simulator/Saves/Saved Objects/starships/basic-deck.json", 
-    JSON.stringify(wrap(createDeck("https://wallpapercave.com/wp/3wPVPxQ.jpg", basicCards)), null, "\t")
+    JSON.stringify(wrap(createDeck("https://img.freepik.com/premium-photo/square-space-background-with-nebula-stars-watercolor-galaxy-illustration_924727-2431.jpg?w=2000", basicCards)), null, "\t")
+);
+fs.writeFileSync(os.homedir() + "/.local/share/Tabletop Simulator/Saves/Saved Objects/starships/rewards-deck.json", 
+    JSON.stringify(wrap(createDeck("https://img.freepik.com/premium-photo/square-space-background-with-nebula-stars-watercolor-galaxy-illustration_924727-2431.jpg?w=2000", cards)), null, "\t")
 );
