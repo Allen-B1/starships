@@ -15,7 +15,7 @@ for (let fortressName in fortresses) {
 
     if (description.split(":").length > 1) {
         description = `<tspan fill="#d4ccff">` + split(description.split(":")[0]) + ":</tspan>" + 
-            split(description.split(":").slice(1).join(":"));
+            "<tspan x=\"0\" dy=\"0.5em\"></tspan>" + split(description.split(":").slice(1).join(":"));
     } else {
         description = split(description);
     }
