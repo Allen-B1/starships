@@ -3,6 +3,7 @@ import os from 'node:os';
 import YAML from 'yaml';
 import { exec } from 'child_process';
 import { wrap, createCard, createDeck } from './tts.js';
+import { execSync } from 'node:child_process';
 
 const yaml = fs.readFileSync('./cards.yml', 'utf8');
 const companies = YAML.parse(yaml);
@@ -23,8 +24,12 @@ const COMPANY_NAMES = {
 };
 
 function upgrade(ship) {
-    if (ship.effects.dmg)
-        ship.effects.dmg += ship.fuel <= 1 ? 1 : ship.fuel;
+    if (ship.effects.dmg) {
+        ship.effects.dmg++;
+        if (ship.fuel >= 2 && !(ship.effects.heal > 0) && !ship.effects.draw && !ship.effects.havoc && ship.effects.hologram == null) {
+            ship.effects.dmg++;
+        }
+    }
     if (ship.effects.heal > 0)
         ship.effects.heal++;
     if (ship.effects.energy)
@@ -44,6 +49,9 @@ function generateShip(ship, shipName, company) {
     }
     if (ship.effects.havoc) {
         effects.push("Play the top " + (ship.effects.havoc == 1 ? "1 card" : (ship.effects.havoc + " cards")) + " of your draw pile");
+    }
+    if (ship.effects.hologram == 0) {
+        effects.push("Put all 0-cost cards from your discard pile into your hand")
     }
     if (ship.effects.recall) {
         effects.push("Recall");
@@ -98,8 +106,8 @@ for (let company in companies) {
         const shipId = shipName.replace(/\s+/g, "-").toLowerCase();
         fs.writeFileSync("out/" + shipId + ".svg", svg);
         fs.writeFileSync("out/" + shipId + "-upgraded.svg", svgUpgraded);
-        exec(`convert out/${shipId}.svg png/${shipId}.png`);
-        exec(`convert out/${shipId}-upgraded.svg png/${shipId}-upgraded.png`);
+        execSync(`convert out/${shipId}.svg png/${shipId}.png`);
+        execSync(`convert out/${shipId}-upgraded.svg png/${shipId}-upgraded.png`);
 
         if (company == "basic") {
             let amt = {
