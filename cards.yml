@@ -51,7 +51,7 @@ yellow:
         fuel: 1
         effects:
             heal: 1
-            draw: 3
+            draw: 2
     "Battlecruiser":
         fuel: 2
         effects:
