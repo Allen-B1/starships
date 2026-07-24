@@ -1,0 +1,85 @@
+basic:
+    "Light Ship":
+        fuel: 1
+        effects: 
+            dmg: 1
+
+    "Heavy Ship":
+        fuel: 2
+        effects:
+            dmg: 2
+
+    "Support Ship":
+        fuel: 1
+        effects:
+            heal: 1
+
+red:
+    Exploiter:
+        fuel: 0
+        effects:
+            fuel: 2
+            heal: -2
+    Pincer:
+        fuel: 0
+        effects:
+            dmg: 2
+            heal: -1
+    Destroyer:
+        fuel: 1
+        effects:
+            dmg: 4
+            heal: -2
+    Obliterator:
+        fuel: 1
+        effects:
+            dmg: 7
+            heal: -3
+
+yellow:
+    "Scout Cruiser":
+        fuel: 0
+        effects:
+            dmg: 1
+            draw: 1
+    "Armored Cruiser":
+        fuel: 1
+        effects:
+            dmg: 2
+            draw: 2
+    "Auxillary Cruiser":
+        fuel: 1
+        effects:
+            heal: 1
+            draw: 3
+    "Battlecruiser":
+        fuel: 2
+        effects:
+            dmg: 3
+            havoc: 1
+    "Torpedo Cruiser":
+        fuel: 1
+        effects:
+            dmg: 4
+            recall: true
+    "Flotilla Leader":
+        fuel: 2
+        effects:
+            dmg: 3
+            hologram: 0
+
+green:
+    Dreadnought:
+        fuel: 2
+        effects:
+            dmg: 2
+            heal: 2
+    Corvette:
+        fuel: 1
+        effects:
+            dmg: 1
+            heal: 1
+    "Patrol Boat":
+        fuel: 0
+        effects:
+            heal: 1
