@@ -104,9 +104,9 @@
     <text x="224" y="34" class="amt">1</text>
 
     
-                <use href="#heal" y="136" x="96" />
-               <text x="128" y="171" class="amt">1</text>
-             
+            <use href="#heal" y="136" x="96" />
+            <text x="128" y="171" class="amt">1</text>
+            
 
     <text x="128" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px">Draw 3 cards</text>
 </svg>

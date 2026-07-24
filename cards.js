@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import YAML from 'yaml';
 import { exec } from 'child_process';
+import { wrap, createCard, createDeck } from './tts.js';
 
 const yaml = fs.readFileSync('./cards.yml', 'utf8');
 const companies = YAML.parse(yaml);
@@ -20,58 +22,84 @@ const COMPANY_NAMES = {
     "yellow":   "Yellow Inc."
 };
 
-let list = "";
-let basicList = "";
+function upgrade(ship) {
+    if (ship.effects.dmg)
+        ship.effects.dmg++;
+    if (ship.effects.heal > 0)
+        ship.effects.heal++;
+    if (ship.effects.energy)
+        ship.effects.energy++;
+
+    if (ship.effects.draw)
+        ship.effects.draw++;
+    if (ship.effects.havoc)
+        ship.effects.havoc++;
+    return ship;
+}
+
+function generateShip(ship, shipName, company) {
+    let effects = [];
+    if (ship.effects.draw) {
+        effects.push("Draw " + (ship.effects.draw == 1 ? "1 card" : (ship.effects.draw + " cards")));
+    }
+    if (ship.effects.havoc) {
+        effects.push("Play the top " + (ship.effects.havoc == 1 ? "1 card" : (ship.effects.havoc + " cards")) + " of your draw pile");
+    }
+    if (ship.effects.recall) {
+        effects.push("Recall");
+    }
+
+    let actions = 0;
+    if (ship.effects.dmg) actions++;
+    if (ship.effects.heal) actions++;
+    if (ship.effects.fuel) actions++;
+
+    let actionsString = "";
+    const ACTION_SIZE = 64;
+    let actionsY = (effects.length == 0 ? 64 + 128 : 64 + 128 - 24);
+    if (ship.effects.dmg) {
+        actionsString += `
+            <use href="#dmg" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
+            <text x="${128 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.dmg}</text>
+        `;
+    }
+    if (ship.effects.heal) {
+        actionsString += `
+            <use href="#${ship.effects.heal < 0 ? "hploss": "heal"}" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 + ACTION_SIZE/2 * (actions - 1)}" />
+            <text x="${128 + ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.heal}</text>
+            `;
+    }
+    if (ship.effects.fuel) {
+        actionsString += `
+            <use href="#fuel" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
+            <text x="${128 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.fuel}</text>
+            `;
+    }
+
+
+    const svg = template.replace("Name of Ship", shipName)
+        .replace("Company", COMPANY_NAMES[company])
+        .replace(COLORS.basic, COLORS[company])
+        .replace("<!-- Card Actions -->", actionsString)
+        .replace("Card Effect", effects.join(". "))
+        .replace("Fuel", ship.fuel);
+    return svg;
+}
+
+let list = [];
+let basicCards = [];
 
 for (let company in companies) {
     for (let shipName in companies[company]) {
         const ship = companies[company][shipName];
+        const svg = generateShip(ship, shipName, company);
+        const svgUpgraded = generateShip(upgrade(ship), shipName + "+", company);
 
-        let effects = [];
-        if (ship.effects.draw) {
-            effects.push("Draw " + (ship.effects.draw == 1 ? "1 card" : (ship.effects.draw + " cards")));
-        }
-        if (ship.effects.recall) {
-            effects.push("Recall");
-        }
-
-        let actions = 0;
-        if (ship.effects.dmg) actions++;
-        if (ship.effects.heal) actions++;
-        if (ship.effects.fuel) actions++;
-
-        let actionsString = "";
-        const ACTION_SIZE = 64;
-        let actionsY = (effects.length == 0 ? 64 + 128 : 64 + 128 - 24);
-        if (ship.effects.dmg) {
-            actionsString += `
-                <use href="#dmg" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
-                <text x="${128 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.dmg}</text>
-            `;
-        }
-        if (ship.effects.heal) {
-            actionsString += `
-                <use href="#${ship.effects.heal < 0 ? "hploss": "heal"}" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 + ACTION_SIZE/2 * (actions - 1)}" />
-               <text x="${128 + ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.heal}</text>
-             `;
-        }
-        if (ship.effects.fuel) {
-            actionsString += `
-                <use href="#fuel" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
-                <text x="${128 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.fuel}</text>
-             `;
-        }
-
-
-        const svg = template.replace("Name of Ship", shipName)
-            .replace("Company", COMPANY_NAMES[company])
-            .replace(COLORS.basic, COLORS[company])
-            .replace("<!-- Card Actions -->", actionsString)
-            .replace("Card Effect", effects.join(". "))
-            .replace("Fuel", ship.fuel);
         const shipId = shipName.replace(/\s+/g, "-").toLowerCase();
         fs.writeFileSync("out/" + shipId + ".svg", svg);
+        fs.writeFileSync("out/" + shipId + "-upgraded.svg", svgUpgraded);
         exec(`convert out/${shipId}.svg png/${shipId}.png`);
+        exec(`convert out/${shipId}-upgraded.svg png/${shipId}-upgraded.png`);
 
         if (company == "basic") {
             let amt = {
@@ -79,12 +107,15 @@ for (let company in companies) {
                 "Light Ship": 6,
                 "Support Ship": 1
             }[shipName];
-            basicList += `${amt} https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}.png\n`;
+            basicCards.push([
+                `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}.png`,
+                `https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}-upgraded.png`
+            ]);
         } else {
-            list += `3 https://raw.githubusercontent.com/allen-b1/starships/refs/heads/master/png/${shipId}.png\n`;
         }
     }
 }
 
-fs.writeFileSync("out/list.txt", list);
-fs.writeFileSync("out/list-basic.txt", basicList);
+fs.writeFileSync(os.homedir() + "/.local/share/Tabletop Simulator/Saves/Saved Objects/starships/basic-deck.json", 
+    JSON.stringify(wrap(createDeck("https://wallpapercave.com/wp/3wPVPxQ.jpg", basicCards)), null, "\t")
+);

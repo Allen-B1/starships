@@ -104,9 +104,9 @@
     <text x="224" y="34" class="amt">2</text>
 
     
-                <use href="#dmg" y="160" x="96" />
-                <text x="128" y="195" class="amt">3</text>
-            
+            <use href="#dmg" y="136" x="96" />
+            <text x="128" y="171" class="amt">3</text>
+        
 
-    <text x="128" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px"></text>
+    <text x="128" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px">Play the top 1 card of your draw pile</text>
 </svg>
