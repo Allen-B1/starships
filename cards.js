@@ -23,6 +23,12 @@ const COMPANY_NAMES = {
     "yellow":   "Yellow Inc."
 };
 
+
+function split(text) {
+    return "<tspan x=\"0\">" + text.replaceAll("\n", "</tspan><tspan x=\"0\" dy=\"1.2em\">") + "</tspan>";
+}
+
+
 function upgrade(ship) {
     if (ship.effects.dmg) {
         ship.effects.dmg++;
@@ -32,8 +38,8 @@ function upgrade(ship) {
     }
     if (ship.effects.heal > 0)
         ship.effects.heal++;
-    if (ship.effects.energy)
-        ship.effects.energy++;
+    if (ship.effects.fuel)
+        ship.effects.fuel++;
 
     if (ship.effects.draw)
         ship.effects.draw++;
@@ -44,14 +50,17 @@ function upgrade(ship) {
 
 function generateShip(ship, shipName, company) {
     let effects = [];
+    if (ship.effects.peacekeeper) {
+        effects.push("for each card\nin your hand")   
+    }
     if (ship.effects.draw) {
         effects.push("Draw " + (ship.effects.draw == 1 ? "1 card" : (ship.effects.draw + " cards")));
     }
     if (ship.effects.havoc) {
-        effects.push("Play the top " + (ship.effects.havoc == 1 ? "1 card" : (ship.effects.havoc + " cards")) + " of your draw pile");
+        effects.push("Play the top\n" + (ship.effects.havoc == 1 ? "1 card" : (ship.effects.havoc + " cards")) + "\nof your draw pile");
     }
     if (ship.effects.hologram == 0) {
-        effects.push("Put all 0-cost cards from your discard pile into your hand")
+        effects.push("Put all 0-cost cards\nfrom your discard pile\ninto your hand")
     }
     if (ship.effects.recall) {
         effects.push("Recall");
@@ -67,20 +76,20 @@ function generateShip(ship, shipName, company) {
     let actionsY = (effects.length == 0 ? 64 + 128 : 64 + 128 - 24);
     if (ship.effects.dmg) {
         actionsString += `
-            <use href="#dmg" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
-            <text x="${128 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.dmg}</text>
+            <use href="#dmg" y="${actionsY - ACTION_SIZE/2}" x="${0 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
+            <text x="${0 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.dmg}</text>
         `;
     }
     if (ship.effects.heal) {
         actionsString += `
-            <use href="#${ship.effects.heal < 0 ? "hploss": "heal"}" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 + ACTION_SIZE/2 * (actions - 1)}" />
-            <text x="${128 + ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.heal}</text>
+            <use href="#${ship.effects.heal < 0 ? "hploss": "heal"}" y="${actionsY - ACTION_SIZE/2}" x="${0 - ACTION_SIZE/2 + ACTION_SIZE/2 * (actions - 1)}" />
+            <text x="${0 + ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.heal}</text>
             `;
     }
     if (ship.effects.fuel) {
         actionsString += `
-            <use href="#fuel" y="${actionsY - ACTION_SIZE/2}" x="${128 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
-            <text x="${128 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.fuel}</text>
+            <use href="#fuel" y="${actionsY - ACTION_SIZE/2}" x="${0 - ACTION_SIZE/2 - ACTION_SIZE/2 * (actions - 1)}" />
+            <text x="${0 - ACTION_SIZE/2 * (actions - 1)}" y="${actionsY + 3}" class="amt">${ship.effects.fuel}</text>
             `;
     }
 
@@ -89,7 +98,7 @@ function generateShip(ship, shipName, company) {
         .replace("Company", COMPANY_NAMES[company])
         .replace(COLORS.basic, COLORS[company])
         .replace("<!-- Card Actions -->", actionsString)
-        .replace("Card Effect", effects.join(". "))
+        .replace("Card Effect", split(effects.join(".\n")))
         .replace("Fuel", ship.fuel);
     return svg;
 }
@@ -112,8 +121,8 @@ for (let company in companies) {
         if (company == "basic") {
             let amt = {
                 "Heavy Ship": 2,
-                "Light Ship": 6,
-                "Support Ship": 1
+                "Light Ship": 5,
+                "Support Ship": 2
             }[shipName];
             for (let i = 0; i < amt; i++) {
                 basicCards.push([

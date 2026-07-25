@@ -31,10 +31,15 @@ red:
             dmg: 4
             heal: -2
     Obliterator:
-        fuel: 1
+        fuel: 2
         effects:
             dmg: 7
             heal: -3
+    Eradicator:
+        fuel: 3
+        effects:
+            dmg: 10
+            heal: -4
 
 yellow:
     "Scout Cruiser":
@@ -51,7 +56,7 @@ yellow:
         fuel: 1
         effects:
             heal: 1
-            draw: 2
+            draw: 3
     "Battlecruiser":
         fuel: 2
         effects:
@@ -83,3 +88,14 @@ green:
         fuel: 0
         effects:
             heal: 1
+    "Peacekeeper":
+        fuel: 2
+        effects:
+            heal: 1
+            peacekeeper: true
+            recall: true
+    "Provider":
+        fuel: 0
+        effects:
+            fuel: 1
+            recall: true
