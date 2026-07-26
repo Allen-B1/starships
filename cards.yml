@@ -63,10 +63,12 @@ yellow:
             dmg: 3
             havoc: 1
     "Torpedo Cruiser":
-        fuel: 1
+        fuel: 0
         effects:
             dmg: 4
-            recall: true
+            if-hand: 0
+        upgrade:
+            dmg: 2
     "Flotilla Leader":
         fuel: 2
         effects:
@@ -93,9 +95,30 @@ green:
         effects:
             heal: 1
             peacekeeper: true
-            recall: true
-    "Provider":
+            recall: "self"
+
+blue:
+    Aviso:
+        fuel: 1
+        effects:
+            dmg: 1
+            hologram: 1
+    Collier:
+        fuel: 1
+        effects:
+            fuel: 2
+            recall: "self"
+    "Depot Boat":
         fuel: 0
         effects:
-            fuel: 1
-            recall: true
+            recall: 1
+    "Repair Boat":
+        fuel: 1
+        effects:
+            dmg: 2
+            recall: 1
+    "Dispatch Boat":
+        fuel: 3
+        effects:
+            dmg: 4
+            discount-recall: true

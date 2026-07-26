@@ -76,9 +76,9 @@
     }
      </style>
     <rect x="-128" y="0" width="256" height="320" fill="#eeeeee" />
-    <rect x="-128" y="0" width="256" height="64" fill="#707010" />
-    <text x="0" y="14"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px;font-weight:500" fill="#fff">Flotilla Leader+</text>
-    <text x="0" y="50"  text-anchor="middle" dominant-baseline="auto" style="font-size:16px" fill="#fff">Yellow Inc.</text>
+    <rect x="-128" y="0" width="256" height="64" fill="#222f70" />
+    <text x="0" y="14"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px;font-weight:500" fill="#fff">Collier+</text>
+    <text x="0" y="50"  text-anchor="middle" dominant-baseline="auto" style="font-size:16px" fill="#fff">Blue Inc.</text>
 
     <symbol id="dmg" width="64" height="64" viewBox="-32 -32 64 64">
         <rect x="-22" y="-22" transform="rotate(45, 0, 0)" width="44" height="44" fill="#BF4040" stroke="#000" stroke-width="4" />
@@ -102,12 +102,12 @@
     </symbol>
 
     <use href="#fuel" x="64" y="0" />
-    <text x="96" y="34" class="amt">2</text>
+    <text x="96" y="34" class="amt">1</text>
 
     
-            <use href="#dmg" y="136" x="-32" />
-            <text x="0" y="171" class="amt">4</text>
-        
+            <use href="#fuel" y="136" x="-32" />
+            <text x="0" y="171" class="amt">3</text>
+            
 
-    <text x="0" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px"><tspan x="0">Put all 0-cost ships</tspan><tspan x="0" dy="1.2em">from your discard pile</tspan><tspan x="0" dy="1.2em">into your hand</tspan></text>
+    <text x="0" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px"><tspan x="0">Recall this ship</tspan></text>
 </svg>

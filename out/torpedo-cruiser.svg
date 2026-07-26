@@ -102,12 +102,12 @@
     </symbol>
 
     <use href="#fuel" x="64" y="0" />
-    <text x="96" y="34" class="amt">1</text>
+    <text x="96" y="34" class="amt">0</text>
 
     
             <use href="#dmg" y="136" x="-32" />
             <text x="0" y="171" class="amt">4</text>
         
 
-    <text x="0" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px"><tspan x="0">Recall</tspan></text>
+    <text x="0" y="224"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px"><tspan x="0">if your hand</tspan><tspan x="0" dy="1.2em">is empty</tspan></text>
 </svg>

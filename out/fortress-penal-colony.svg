@@ -103,8 +103,8 @@
     </filter>
   </defs>
    <rect x="-128" y="-96" width="256" height="192" fill="#925300" />
-    <text x="0" y="-24"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px;font-weight:500" fill="#fff">Command Center</text>
-    <text x="0" y="8"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px" fill="#fff"><tspan fill="#d4ccff"><tspan x="0">Once per combat</tspan>:</tspan><tspan x="0" dy="0.5em"></tspan><tspan x="0"></tspan><tspan x="0" dy="1.2em">Recall a ship</tspan><tspan x="0" dy="1.2em">Draw 2 cards</tspan></text>
+    <text x="0" y="-24"  text-anchor="middle" dominant-baseline="middle" style="font-size:24px;font-weight:500" fill="#fff">Penal Colony</text>
+    <text x="0" y="8"  text-anchor="middle" dominant-baseline="hanging" style="font-size:20px" fill="#fff"><tspan fill="#d4ccff"><tspan x="0">Once per combat</tspan>:</tspan><tspan x="0" dy="0.5em"></tspan><tspan x="0"></tspan><tspan x="0" dy="1.2em">Lose 1 health</tspan><tspan x="0" dy="1.2em">Gain 2 fuel</tspan></text>
     <image
        width="24"
        height="24"

@@ -14,13 +14,15 @@ const COLORS = {
     "basic": "#404040",
     "red": "#702323",
     "green": "#107040",
-    "yellow": "#707010"
+    "yellow": "#707010",
+    "blue": "#222f70",
 };
 const COMPANY_NAMES = {
     "basic":    "Basic",
     "red":      "Destruction Inc.",
     "green":    "Green Inc.",
-    "yellow":   "Yellow Inc."
+    "yellow":   "Yellow Inc.",
+    "blue":     "Blue Inc.",
 };
 
 
@@ -31,9 +33,13 @@ function split(text) {
 
 function upgrade(ship) {
     if (ship.effects.dmg) {
-        ship.effects.dmg++;
-        if (ship.fuel >= 2 && !(ship.effects.heal > 0) && !ship.effects.draw && !ship.effects.havoc && ship.effects.hologram == null) {
+        if (ship.upgrade && "dmg" in ship.upgrade) {
+            ship.effects.dmg += ship.upgrade.dmg;
+        } else {
             ship.effects.dmg++;
+            if (ship.fuel >= 2 && !(ship.effects.heal > 0) && !ship.effects.draw && !ship.effects.havoc && ship.effects.hologram == null) {
+                ship.effects.dmg++;
+            }
         }
     }
     if (ship.effects.heal > 0)
@@ -45,7 +51,15 @@ function upgrade(ship) {
         ship.effects.draw++;
     if (ship.effects.havoc)
         ship.effects.havoc++;
+    if (ship.effects.recall > 0)
+        ship.effects.recall++;
+    if (ship.effects.hologram > 0) 
+        ship.effects.hologram++;
     return ship;
+}
+
+function formatShips(n) {
+    return n == 1 ? "1 ship" : n + " ships";
 }
 
 function generateShip(ship, shipName, company) {
@@ -60,10 +74,20 @@ function generateShip(ship, shipName, company) {
         effects.push("Play the top\n" + (ship.effects.havoc == 1 ? "1 card" : (ship.effects.havoc + " cards")) + "\nof your draw pile");
     }
     if (ship.effects.hologram == 0) {
-        effects.push("Put all 0-cost cards\nfrom your discard pile\ninto your hand")
+        effects.push("Put all 0-cost ships\nfrom your discard pile\ninto your hand")
+    } else if (ship.effects.hologram > 0) {
+        effects.push("Put " + formatShips(ship.effects.hologram) + "\nfrom your discard pile\ninto your hand");
     }
-    if (ship.effects.recall) {
-        effects.push("Recall");
+    if (ship.effects.recall == "self") {
+        effects.push("Recall this ship");
+    } else if (ship.effects.recall > 0) {
+        effects.push("Recall " + (ship.effects.recall == 1 ? "1 ship" : ship.effects.recall + " ships") + "\nfrom your hand\nor discard pile");
+    }
+    if (ship.effects["discount-recall"]) {
+        effects.push("Costs 1 less for\neach recalled ship");
+    }
+    if (ship.effects["if-hand"] == 0) {
+        effects.push("if your hand\nis empty");
     }
 
     let actions = 0;
@@ -93,12 +117,16 @@ function generateShip(ship, shipName, company) {
             `;
     }
 
+    let effectString = split(effects.join(".\n"));
+    if (actions == 0) {
+        effectString = `<tspan x="0" dy="-64px">` + effectString + "</tspan>";
+    }
 
     const svg = template.replace("Name of Ship", shipName)
         .replace("Company", COMPANY_NAMES[company])
         .replace(COLORS.basic, COLORS[company])
         .replace("<!-- Card Actions -->", actionsString)
-        .replace("Card Effect", split(effects.join(".\n")))
+        .replace("Card Effect", effectString)
         .replace("Fuel", ship.fuel);
     return svg;
 }
