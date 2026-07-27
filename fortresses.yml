@@ -1,6 +1,7 @@
 "Agitprop": "Double the first health\ngain each turn"
-"Recruiter": "Gain health:\nDraw 1 card"
 "Knockback": "Lose health\nduring your turn:\nDeal 1 damage"
-"Penal Colony": "Once per combat:\nLose 1 health\nGain 2 fuel"
-"Command Center": "Once per combat:\nRecall a ship\nDraw 2 cards"
 "FOB": "Play a 2 or 3-cost card:\nDeal 1 damage"
+
+"Recruiter": "The first time\nyou gain health\neach turn:\nDraw 1 card"
+"Penal Colony": "Once per combat:\nLose 1 health\nGain 3 fuel"
+"Command Center": "Once per combat:\nRecall a ship\nDraw 2 cards"
