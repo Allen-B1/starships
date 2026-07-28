@@ -62,6 +62,8 @@ yellow:
         effects:
             dmg: 3
             havoc: 1
+        upgrade:
+            dmg: 0
     "Torpedo Cruiser":
         fuel: 0
         effects:
@@ -101,7 +103,7 @@ blue:
     Aviso:
         fuel: 1
         effects:
-            dmg: 1
+            dmg: 2
             hologram: 1
     Collier:
         fuel: 1
